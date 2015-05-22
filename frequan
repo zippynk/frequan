@@ -1,0 +1,69 @@
+#!/usr/bin/env python
+
+#  (c) Copyright 2015 Nathan Krantz-Fire. All rights reserved.
+#  https://github.com/zippynk/frequan
+
+#  This Source Code Form is subject to the terms of the Mozilla Public
+#  License, v. 2.0. If a copy of the MPL was not distributed with this
+#  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import sys
+import operator
+
+if "-h" in sys.argv or "--help" in sys.argv:
+    if not "--help" in sys.argv:
+        print """Usage:
+frequan [-i input file] [--order] [--attempt-alphabet-substitution] [--help]
+
+Run `frequan --help` for more information."""
+    else:
+        print "Longer help coming soon. For now, you're stuck with -h."
+    exit(0)
+
+alphabet = ['e','t','a','o','i','n','s','h','r','d','l','c','u','m','w','f','g','y','p','b','v','k','j','x','q','z']
+
+if not "-i" in sys.argv:
+    string = raw_input("String to analyse? ")
+else:
+    for i in range(len(sys.argv)):
+        if sys.argv[i] == "-i":
+            path = sys.argv[i+1]
+    file = open(path,"r")
+    string = file.read()
+    file.close
+results = {}
+for i in string:
+    if i in results.keys():
+        results[i] += 1
+    else:
+        results[i] = 1
+if "--order" in sys.argv:
+    results2 = sorted(results.items(), key=operator.itemgetter(1), reverse=True)
+    results = results2
+print results
+if "--attempt-alphabet-substitution" in sys.argv:
+    if not "--order" in sys.argv:
+        results = sorted(results.items(), key=operator.itemgetter(1), reverse=True)
+    key = []
+    unknown = []
+    for i in results:
+        if str(i[0]) in alphabet:
+            key.append(i[0])
+    for i in alphabet:
+        if not i in key:
+            unknown.append(i)
+    string2 = ""
+    for i in string:
+        if i in alphabet:
+            if i in key:
+                try:
+                    for i2 in range(len(key)):
+                        if i == key[i2]:
+                            string2 = string2 +alphabet[i2]
+                except IndexError:
+                    string2 = string2 + "<?>"
+            else:
+                string2 = string2 + "<?>"
+        else:
+            string2 = string2 + i
+    print string2
