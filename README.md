@@ -5,5 +5,4 @@ Frequan compares the relative frequencies of the different characters of an ente
 
 It can also attempt to decrypt alphabet-only substitution ciphers. However, this is experimental and does not work well yet.
 
-Usage:
-`frequan [-i input file] [--order] [--attempt-alphabet-substitution] [--help]`
+Usage: `frequan [-i input file] [--order] [--attempt-alphabet-substitution] [--help]`
